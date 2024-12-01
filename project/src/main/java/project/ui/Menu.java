@@ -3,6 +3,7 @@ package project.ui;
 import java.awt.Dimension;
 import com.apple.eawt.Application;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
@@ -132,8 +133,10 @@ public class Menu {
 	
 		frame.setMinimumSize(new Dimension(600, 300));
 		frame.setTitle("Java Quiz");
-		ImageIcon icon = new ImageIcon("icon.png");
-		frame.setIconImage(icon.getImage());
+		Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");
+        frame.setIconImage(icon);
+
+    
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
