@@ -35,7 +35,7 @@ public class ResultSender extends MailSender {
 		// Додаємо до листа загальну кількість правильних відповідей
 		builder.append("<h2>Score: " + right + "/" + results.size() + "</h2>");
 		
-		// Починаємо формування таблиці з результатами
+		// формуємо таблицю з результатами
 		builder.append("<table>");
 		builder.append("<tr><th>#</th><th>Question</th><th>Your answer</th><th>Correct?</th></tr>");
 		

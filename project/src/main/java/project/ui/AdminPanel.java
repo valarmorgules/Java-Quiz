@@ -38,27 +38,27 @@ import project.quiz.Quiz;
 import project.quiz.QuizKey;
 
 public class AdminPanel extends JPanel{
-	private final Font titleFont = new Font("Arial", Font.BOLD, 30);
+	private final Font titleFont = new Font("Arial", Font.BOLD, 30); // шрифт для заголовку 
 	private Question currentQuestion;
-	private int currentIndex = 0;
+	private int currentIndex = 0; // індекс поточного питання
 	
-	private List<JTextField> answerFileds = new ArrayList<JTextField>();
-	private List<JRadioButton> answerRadios = new ArrayList<JRadioButton>();
+	private List<JTextField> answerFileds = new ArrayList<JTextField>(); // масив з текстовими полями для відповідей
+	private List<JRadioButton> answerRadios = new ArrayList<JRadioButton>(); // масив з позначками правильної відповіді
 	
-	private JPanel formPanel = new JPanel();
-	private JTextField questionField = new JTextField();
-	private ButtonGroup radioGroup = new ButtonGroup();
-	private int correctAnswer = 0;
+	private JPanel formPanel = new JPanel(); //базовий контейнер для форми з питаннями 
+	private JTextField questionField = new JTextField(); // текстове поле для питання 
+	private ButtonGroup radioGroup = new ButtonGroup(); //група лдя позначок правильного питання
+	private int correctAnswer = 0; //індекс правильної відповіді 
 	
-	private JComboBox<String> box = new JComboBox<String>();
+	private JComboBox<String> box = new JComboBox<String>(); // випадний список з питанями 
 	private Quiz quiz = new Quiz();
 	private QuizKey quizKey = new QuizKey();
-	private int nextId = 0;
+	private int nextId = 0; // id для нового питання 
 	
 	private MultyQuizFileManager manager;
 	private JsonKeyFileManager keyManager;
 	
-	private void turnAnswerRow(int index, boolean condition) {
+	private void turnAnswerRow(int index, boolean condition) { // вмикає і вимикає рядок для відповіді 
 		answerFileds.get(index).setEnabled(condition);
 		JRadioButton btn = answerRadios.get(index);
 		btn.setEnabled(condition);
@@ -67,7 +67,7 @@ public class AdminPanel extends JPanel{
 		}
 	}
 	
-	private void addAnswer() {
+	private void addAnswer() { // додає рядок(текстове поле та позначка) для відповіді
 		final int index = answerFileds.size();
 		
 		JLabel answerLabel = new JLabel();
@@ -80,13 +80,13 @@ public class AdminPanel extends JPanel{
 		
 		addRadioButton(index, field);
 	}
-	private JTextField createAnswerField(int index) {
+	private JTextField createAnswerField(int index) { //створює текстове поле для відповіді 
 		JTextField field = new JTextField();
 		
-		field.getDocument().addDocumentListener(new DocumentListener() {
+		field.getDocument().addDocumentListener(new DocumentListener() { // обробник подій для текстового поля 
 
 			@Override
-			public void insertUpdate(DocumentEvent e) {
+			public void insertUpdate(DocumentEvent e) { // дана подія викликається коли змінюється текст в полі 
 				if(index + 1 >= answerFileds.size()) return;
 				
 				boolean condition = answerFileds.get(index).getText().length() > 0;
@@ -105,12 +105,12 @@ public class AdminPanel extends JPanel{
 			}
 
 			@Override
-			public void removeUpdate(DocumentEvent e) {
+			public void removeUpdate(DocumentEvent e) { // дана подія викликається коли видаляється текст в полі 
 				insertUpdate(e);
 			}
 
 			@Override
-			public void changedUpdate(DocumentEvent e) {
+			public void changedUpdate(DocumentEvent e) { 
 			}	
 		});
 		
@@ -119,7 +119,7 @@ public class AdminPanel extends JPanel{
 		return field;
 	}
 	
-	private void addRadioButton(int index, JTextField field) {
+	private void addRadioButton(int index, JTextField field) { // створюємо і додаємо позначку для відповіді
 		JRadioButton radio = new JRadioButton();
 		radio.setEnabled(false);
 		answerRadios.add(radio);
@@ -132,16 +132,17 @@ public class AdminPanel extends JPanel{
 			radio.setEnabled(true);
 		}
 		
-		radio.addActionListener(new ActionListener() {
+		radio.addActionListener(new ActionListener() { // обробник подій для позначки 
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			
+			public void actionPerformed(ActionEvent e) { // подія вибору позначки  
 				correctAnswer = index;
 			}
 		});
 	}
 	
-	private void updateForm(int index, Question question) {
+	private void updateForm(int index, Question question) { // додаємо інформацію з питання в поля форми 
 		int correct = quizKey.keys.get(index).correct;
 		correctAnswer = correct;
 		
@@ -157,7 +158,7 @@ public class AdminPanel extends JPanel{
 		answerRadios.get(correct).setSelected(true);
 	}
 	
-	private void updateQuestion() {
+	private void updateQuestion() { // додаємо інформацію з полів форми в поточне питання 
 		Question question = quiz.questions.get(currentIndex);
 		Key key = quizKey.keys.get(currentIndex);
 		key.correct = correctAnswer;
@@ -181,7 +182,7 @@ public class AdminPanel extends JPanel{
 		box.setSelectedIndex(currentIndex+1);
 	}
 	
-	private void saveAll() {
+	private void saveAll() { // зберігаємо актуальні питання у файли
 		try {			
 			manager.saveQuiz(quiz);
 			keyManager.saveKey(quizKey);
@@ -192,7 +193,7 @@ public class AdminPanel extends JPanel{
 		}
 	}
 	
-	private Question addNewQuestion() {
+	private Question addNewQuestion() { // створюємо і додаємо нове питання 
 		Question question = new Question();
 		question.text = "New question";
 		question.id = nextId;
@@ -213,7 +214,7 @@ public class AdminPanel extends JPanel{
 		return question;
 	}
 	
-	private void loadQuestions() {
+	private void loadQuestions() { 
 		try {
 			quiz = manager.loadQuiz();
 			quizKey = keyManager.loadKey();
@@ -226,7 +227,7 @@ public class AdminPanel extends JPanel{
 			addNewQuestion();
 		}
 	}
-	
+	// конструктор AdminPanel приймає : менеджера з питаннями, менеджера з ключами, інтерфейс зміни поточного вікна
 	public AdminPanel(MultyQuizFileManager manager, JsonKeyFileManager keyManager, PanelChange mainPanel) {
 		this.manager = manager;
 		this.keyManager = keyManager;
@@ -254,7 +255,7 @@ public class AdminPanel extends JPanel{
 		if(quiz.questions.size()>0) updateForm(0, quiz.questions.get(0));
 	}
 	
-	private JLabel createTitle() {
+	private JLabel createTitle() {  //створює заголовок вікна
 		JLabel title = new JLabel();
 		title.setText("Admin mode");
 		title.setFont(titleFont);
@@ -263,15 +264,15 @@ public class AdminPanel extends JPanel{
 		return title;
 	}
 	
-	private void setBox() {
+	private void setBox() { // налаштовує випадний список 
 		for(int i = 0; i < quiz.questions.size(); i++) {
 			box.addItem(quiz.questions.get(i).text);
 		}
 		
-		box.addActionListener(new ActionListener() {
+		box.addActionListener(new ActionListener() { // обробник подій для випадного списку 
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) { // подія вибору питання 
 				currentIndex = box.getSelectedIndex();
 				if(currentIndex < 0 || currentIndex >= quiz.questions.size()) return;
 				
@@ -281,7 +282,7 @@ public class AdminPanel extends JPanel{
 		});
 	}
 	
-	private void setForm() {
+	private void setForm() { // налаштовуємо форму 
 		formPanel.setLayout(new GridLayout(0, 3, 5, 5));
 		
 		JLabel questionLabel = new JLabel("Question text");
@@ -295,7 +296,7 @@ public class AdminPanel extends JPanel{
 			addAnswer();
 	}
 	
-	private JPanel createButtons(PanelChange mainPanel) {
+	private JPanel createButtons(PanelChange mainPanel) { // створення контейнеру з усіма кнопками 
 		JPanel btns = new JPanel();
 		
 		
@@ -307,13 +308,13 @@ public class AdminPanel extends JPanel{
 		return btns;
 	}
 	
-	private JButton createSave() {
+	private JButton createSave() { // створює кнопку для збереження питання 
 		JButton saveBtn = new JButton();
 		saveBtn.setText("Save");
 		saveBtn.setAlignmentX(CENTER_ALIGNMENT);
 		saveBtn.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) { // подія натискання кнопки 
 				updateQuestion();
 			}
 		});
@@ -321,7 +322,7 @@ public class AdminPanel extends JPanel{
 		return saveBtn;
 	}
 	
-	private JButton createNew() {//create button to add new question
+	private JButton createNew() {//створюємо кнопку для нового питання 
 		JButton newBtn = new JButton();
 		newBtn.setText("New");
 		newBtn.setAlignmentX(CENTER_ALIGNMENT);
@@ -340,7 +341,7 @@ public class AdminPanel extends JPanel{
 		return newBtn;
 	}
 	
-	private JButton createRemove() {//create button to remove question
+	private JButton createRemove() {// створюємо кнопку для видалення питання
 		JButton removeBtn = new JButton();
 		removeBtn.setText("Remove");
 		removeBtn.setAlignmentX(CENTER_ALIGNMENT);
@@ -374,7 +375,7 @@ public class AdminPanel extends JPanel{
 		return removeBtn;
 	}
 	
-	private JButton createBack(PanelChange mainPanel) {//create button to back to main screen
+	private JButton createBack(PanelChange mainPanel) { //створюємо кнопку для поверненя в меню  
 		JButton backBtn = new JButton();
 		backBtn.setText("Back");
 		

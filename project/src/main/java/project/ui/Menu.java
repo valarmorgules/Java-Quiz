@@ -119,7 +119,7 @@ public class Menu {
 				String password = JOptionPane.showInputDialog(null, "Enter password");
 				if(password == null) return;
 				
-				if(!password.equals("admin")) {
+				if(!password.equals("admin")) { 
 					JOptionPane.showMessageDialog(null, "Invalid Password!");
 					return;
 				}
