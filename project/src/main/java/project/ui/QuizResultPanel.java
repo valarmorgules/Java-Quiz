@@ -1,3 +1,7 @@
+// QuizResultPanel.java 
+// done by Kostiuchenko Mariia (comp mat 2)
+// date 06.12.2024
+
 package project.ui;
 
 import java.awt.event.MouseAdapter;
