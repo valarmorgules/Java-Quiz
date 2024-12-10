@@ -13,40 +13,46 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+//Головна панель з вибором режиму (користувач чи адміністратор)
 public class MainPanel extends JPanel{
-	private final Font titleFont = new Font("Arial", Font.BOLD, 30);
-	private JButton takeQuiz;
-	private JButton admin;
+	private final Font titleFont = new Font("Arial", Font.BOLD, 30); // Шрифт для заголовка
+	private JButton takeQuiz; // Кнопка для початку тесту
+	private JButton admin; // Кнопка для входу в режим адміністратора
 	
+	// Конструктор створює графічний інтерфейс
 	public MainPanel() {
 		this.setBorder(new EmptyBorder(50, 50, 50, 50));
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
+		// Заголовок
 		JLabel title = new JLabel();
-		title.setText("Java quiz");
-		title.setFont(titleFont);
-		title.setAlignmentX(CENTER_ALIGNMENT);
+		title.setText("Java quiz"); // Текст заголовка
+		title.setFont(titleFont); // Застосування шрифту
+		title.setAlignmentX(CENTER_ALIGNMENT); // Вирівнювання по центру
 		
-		this.add(title);
-		this.add(Box.createVerticalStrut(10));
+		this.add(title); // Додавання заголовка
+		this.add(Box.createVerticalStrut(10)); // Вертикальний відступ
 		
+		// Кнопка для початку тесту
 		takeQuiz = new JButton();
 		takeQuiz.setText("Take quiz");
-		takeQuiz.setAlignmentX(CENTER_ALIGNMENT);
+		takeQuiz.setAlignmentX(CENTER_ALIGNMENT); // Вирівнювання по центру
 		
 		
-		this.add(takeQuiz);
-		this.add(Box.createVerticalStrut(10));
+		this.add(takeQuiz); // Додавання кнопки
+		this.add(Box.createVerticalStrut(10)); // Вертикальний відступ
 		
+		// Кнопка для режиму адміна
 		admin = new JButton();
 		admin.setText("Admin mode");
-		admin.setAlignmentX(CENTER_ALIGNMENT);
+		admin.setAlignmentX(CENTER_ALIGNMENT); // Вирівнювання по центру
 		
-		this.add(admin);
-		this.add(Box.createVerticalStrut(10));
+		this.add(admin); // Додавання кнопки
+		this.add(Box.createVerticalStrut(10)); // Вертикальний відступ
 		
 	}
 	
+	// Додавання обробника для переходу до панелі тестування
 	public void addTakerChange(PanelChange takePanel) {
 		takeQuiz.addMouseListener(new MouseAdapter() {
 			@Override
@@ -56,6 +62,7 @@ public class MainPanel extends JPanel{
 		});
 	}
 	
+	// Додавання обробника для переходу до панелі адміністратора
 	public void addAdminChange(PanelChange adminPanel) {
 		admin.addMouseListener(new MouseAdapter() {
 			@Override

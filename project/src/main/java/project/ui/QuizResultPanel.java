@@ -18,30 +18,33 @@ import project.MailSender;
 import project.ResultSender;
 import project.quiz.QuestionResult;
 
+//Панель для відображення результатів тесту та можливості надсилання результатів на електронну пошту
 public class QuizResultPanel extends JPanel{
-	private ResultSender sender;
-	private List<QuestionResult> results;
-	private JTextField field;
-	private JLabel label;
+	private ResultSender sender; // Відправник результатів
+	private List<QuestionResult> results; // Результати тесту
+	private JTextField field; // Поле для введення електронної адреси
+	private JLabel label; // Лейбл для відображення рахунку
 	
+	// Конструктор, який ініціалізує панель результатів
 	public QuizResultPanel(List<QuestionResult> results, PanelChange mainPanel) {
 		this.results = results;
 		sender = new ResultSender("quizjava6@gmail.com", "bvoz ikzt mqiy ekdc");
 		
-		this.setBorder(new EmptyBorder(50, 50, 50, 50));
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBorder(new EmptyBorder(50, 50, 50, 50)); // Встановлення відступів
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // Вертикальне розташування компонентів
 		
 		field = new JTextField();
-		field.setText("youre@mail.you");
+		field.setText("youre@mail.you"); // Значення за замовчуванням для електронної адреси
 		
 		label = new JLabel();
 		int right = 0;
 		for(QuestionResult result: results) {
-			if(result.isCorrect) right++;
+			if(result.isCorrect) right++; // Підрахунок правильних відповідей
 		}
 		
-		label.setText("Score: "+right + "/" + results.size());
+		label.setText("Score: "+right + "/" + results.size()); // Встановлення тексту з рахунком
 		
+		// Кнопка для надсилання результатів
 		JButton sendBtn = new JButton();
 		sendBtn.setText("Send");
 		
@@ -52,6 +55,7 @@ public class QuizResultPanel extends JPanel{
 			}
 		});
 		
+		// Додавання компонентів до панелі
 		this.add(label);
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		this.add(Box.createVerticalStrut(10));
@@ -62,6 +66,7 @@ public class QuizResultPanel extends JPanel{
 		sendBtn.setAlignmentX(CENTER_ALIGNMENT);
 		this.add(Box.createVerticalStrut(10));
 		
+		// Кнопка для повернення назад
 		JButton backBtn = new JButton();
 		backBtn.setText("Back");
 		
@@ -75,11 +80,12 @@ public class QuizResultPanel extends JPanel{
 		backBtn.setAlignmentX(CENTER_ALIGNMENT);
 	}
 	
+	// Метод для надсилання результатів на електронну пошту
 	private void sendResult() {
 		String email = field.getText();
 	
 		
-		Thread th = new Thread() {
+		Thread th = new Thread() { // Використання окремого потоку для виконання операції надсилання
 			public void run() {
 				try {
 					sender.sendResults(email, results);
